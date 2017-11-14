@@ -1,3 +1,7 @@
+const cellHeight = 83,
+      cellWidth = 101,
+      characterOffestY = 25;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -26,9 +30,19 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 class Player{
+    constructor (spriteUrl){
+        Resources.load(spriteUrl);
+        this.sprite = spriteUrl;
+
+        this.x = 2;
+        this.y = 5;
+    };
+
     handleInput (key){};
     update(){};
-    render(){};
+    render(){
+        ctx.drawImage(Resources.get(this.sprite), this.x * cellWidth, this.y * cellHeight - characterOffestY);
+    };
 };
 
 
@@ -36,7 +50,7 @@ class Player{
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-let allEnemies = [], player = new Player;
+let allEnemies = [], player = new Player('images/char-boy.png');
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
