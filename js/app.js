@@ -38,8 +38,32 @@ class Player{
         this.y = 5;
     };
 
-    handleInput (key){};
+    handleInput (key){
+        switch (key){
+            case 'left':
+                if(this.x > 0){
+                    this.x--;
+                }
+                break;
+            case 'right':
+                if(this.x < 4){
+                    this.x++;
+                }
+                break;
+            case 'up':
+                if(this.y > 0){
+                    this.y--;
+                }
+                break;
+            case 'down':
+                if(this.y < 5){
+                    this.y++;
+                }
+        };
+    };
+
     update(){};
+
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x * cellWidth, this.y * cellHeight - characterOffestY);
     };
