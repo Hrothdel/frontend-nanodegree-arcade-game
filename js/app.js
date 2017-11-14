@@ -6,7 +6,8 @@ const cellHeight = 83,
       minEnemySpeed = 200,
       maxEnemyNumber = 4,
       minEnemySpawnTime = 200,
-      maxEnemySpawnTime = 1000;
+      maxEnemySpawnTime = 1000,
+      rightMargin = cellWidth * 5;
 
 // Enemies our player must avoid
 class Enemy{
@@ -16,12 +17,16 @@ class Enemy{
         // The image/sprite for our enemies, this uses
         // a helper we've provided to easily load images
         this.sprite = 'images/enemy-bug.png';
+        this.initialize();
+    };
 
+    initialize(){
         this.x = -100;
         this.y = 1 + Math.floor(Math.random() * 3);
 
         this.speed = minEnemySpeed + Math.random() * (maxEnemySpeed - minEnemySpeed);
-    };
+        this.willSpawn = false;
+    }
 
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
@@ -31,6 +36,11 @@ class Enemy{
         // all computers.
 
         this.x += this.speed * dt;
+
+        if(this.x > rightMargin && !this.willSpawn){
+                setTimeout(function () {this.initialize();}.bind(this), getSpawnTime());
+                this.willSpawn = true;
+        }
     };
 
     // Draw the enemy on the screen, required method for game
@@ -108,12 +118,16 @@ class Player{
     };
 };
 
+let getSpawnTime = function (){
+    return minEnemySpawnTime + Math.random() * maxEnemySpawnTime;
+}
+
 let spawnEnemy = function () {
     if(allEnemies.length < maxEnemyNumber){
         allEnemies.push(new Enemy);
     }
 
-    setTimeout(spawnEnemy, (minEnemySpawnTime + Math.random() * maxEnemySpawnTime));
+    setTimeout(spawnEnemy, getSpawnTime());
 }
 
 // Now instantiate your objects.
