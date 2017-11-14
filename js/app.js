@@ -36,30 +36,55 @@ class Player{
 
         this.x = 2;
         this.y = 5;
+
+        this.left = true; this.right = true;
+        this.up = true; this.down = true;
     };
 
     handleInput (key){
         switch (key){
             case 'left':
-                if(this.x > 0){
+                if(this.left && this.x > 0){
                     this.x--;
+                    this.left = false;
                 }
                 break;
             case 'right':
-                if(this.x < 4){
+                if(this.right && this.x < 4){
                     this.x++;
+                    this.right = false;
                 }
                 break;
             case 'up':
-                if(this.y > 0){
+                if(this.up && this.y > 0){
                     this.y--;
+                    this.up = false;
                 }
                 break;
             case 'down':
-                if(this.y < 5){
+                if(this.down && this.y < 5){
                     this.y++;
+                    this.down = false;
                 }
+                break;
         };
+    };
+
+    unlockDirection(key){
+        switch(key){
+            case 'left':
+                this.left = true;
+                break;
+            case 'right':
+                this.right = true;
+                break;
+            case 'up':
+                this.up = true;
+                break;
+            case 'down':
+                this.down = true;
+                break;
+        }
     };
 
     update(){};
@@ -78,7 +103,7 @@ let allEnemies = [], player = new Player('images/char-boy.png');
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keydown', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -92,4 +117,20 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+});
+
+document.addEventListener('keyup', function(e) {
+    var allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+
+        65: 'left',
+        87: 'up',
+        68: 'right',
+        83: 'down'
+    };
+
+    player.unlockDirection(allowedKeys[e.keyCode]);
 });
