@@ -1,28 +1,39 @@
 const cellHeight = 83,
       cellWidth = 101,
-      characterOffestY = 25;
+      characterOffestY = 25,
+      enemyOffestY = 25,
+      maxEnemySpeed = 500,
+      minEnemySpeed = 200;
 
 // Enemies our player must avoid
-var Enemy = function() {
+class Enemy{
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+    constructor(){
+        // The image/sprite for our enemies, this uses
+        // a helper we've provided to easily load images
+        this.sprite = 'images/enemy-bug.png';
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-};
+        this.x = -100;
+        this.y = 1 + Math.floor(Math.random() * 3);
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-};
+        this.speed = minEnemySpeed + Math.random() * (maxEnemySpeed - minEnemySpeed);
+    };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    // Update the enemy's position, required method for game
+    // Parameter: dt, a time delta between ticks
+    update(dt){
+        // You should multiply any movement by the dt parameter
+        // which will ensure the game runs at the same speed for
+        // all computers.
+
+        this.x += this.speed * dt;
+    };
+
+    // Draw the enemy on the screen, required method for game
+    render(){
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y * cellHeight - enemyOffestY);
+    };
 };
 
 // Now write your own player class
@@ -100,6 +111,8 @@ class Player{
 // Place the player object in a variable called player
 
 let allEnemies = [], player = new Player('images/char-boy.png');
+
+allEnemies.push(new Enemy);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
