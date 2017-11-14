@@ -3,7 +3,10 @@ const cellHeight = 83,
       characterOffestY = 25,
       enemyOffestY = 25,
       maxEnemySpeed = 500,
-      minEnemySpeed = 200;
+      minEnemySpeed = 200,
+      maxEnemyNumber = 4,
+      minEnemySpawnTime = 200,
+      maxEnemySpawnTime = 1000;
 
 // Enemies our player must avoid
 class Enemy{
@@ -105,6 +108,13 @@ class Player{
     };
 };
 
+let spawnEnemy = function () {
+    if(allEnemies.length < maxEnemyNumber){
+        allEnemies.push(new Enemy);
+    }
+
+    setTimeout(spawnEnemy, (minEnemySpawnTime + Math.random() * maxEnemySpawnTime));
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -112,7 +122,8 @@ class Player{
 
 let allEnemies = [], player = new Player('images/char-boy.png');
 
-allEnemies.push(new Enemy);
+// allEnemies.push(new Enemy);
+spawnEnemy();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
