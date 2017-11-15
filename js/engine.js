@@ -101,7 +101,7 @@ var Engine = (function(global) {
             if(((enemy.x >= player.x * cellWidth && enemy.x <= player.x * cellWidth + player.hitboxWidth) ||
                (enemy.x <= player.x * cellWidth && enemy.x + enemy.hitboxWidth >= player.x * cellWidth)) &&
                enemy.y === player.y) {
-                   console.log('collision');
+                   enemyCollision();
             }
         });
     }

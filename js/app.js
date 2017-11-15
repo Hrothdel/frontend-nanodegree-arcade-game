@@ -71,6 +71,11 @@ class Player{
         this.up = true; this.down = true;
     };
 
+    init (){
+        this.x = 2;
+        this.y = 5;
+    }
+
     handleInput (key){
         switch (key){
             case 'left':
@@ -135,6 +140,10 @@ let spawnEnemy = function () {
 
     setTimeout(spawnEnemy, getSpawnTime());
 }
+
+let enemyCollision = function () {
+    player.init();
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
