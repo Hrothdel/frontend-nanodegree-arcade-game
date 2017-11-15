@@ -1,7 +1,7 @@
 const cellHeight = 83,
       cellWidth = 101,
-      characterOffestY = 25,
-      enemyOffestY = 25,
+      characterOffsetY = 25,
+      enemyOffsetY = 25,
       maxEnemySpeed = 500,
       minEnemySpeed = 200,
       maxEnemyNumber = 4,
@@ -18,6 +18,9 @@ class Enemy{
         // a helper we've provided to easily load images
         this.sprite = 'images/enemy-bug.png';
         this.initialize();
+
+        this.hitboxWidth = 90;
+        this.hitboxHeight = 50;
     };
 
     initialize(){
@@ -45,7 +48,7 @@ class Enemy{
 
     // Draw the enemy on the screen, required method for game
     render(){
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y * cellHeight - enemyOffestY);
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y * cellHeight - enemyOffsetY);
     };
 };
 
@@ -60,6 +63,9 @@ class Player{
 
         this.x = 2;
         this.y = 5;
+
+        this.hitboxWidth = 40;
+        this.hitboxHeight = 80;
 
         this.left = true; this.right = true;
         this.up = true; this.down = true;
@@ -114,7 +120,7 @@ class Player{
     update(){};
 
     render(){
-        ctx.drawImage(Resources.get(this.sprite), this.x * cellWidth, this.y * cellHeight - characterOffestY);
+        ctx.drawImage(Resources.get(this.sprite), this.x * cellWidth, this.y * cellHeight - characterOffsetY);
     };
 };
 
