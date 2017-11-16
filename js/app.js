@@ -4,7 +4,7 @@ const cellHeight = 83,
       enemyOffsetY = 25,
       maxEnemySpeed = 500,
       minEnemySpeed = 200,
-      maxEnemyNumber = 10,
+      maxEnemyNumber = 4,
       minEnemySpawnTime = 200,
       maxEnemySpawnTime = 1000,
       rightMargin = cellWidth * 5;
@@ -137,6 +137,12 @@ class Player{
     };
 };
 
+let reset = function() {
+    won = false;
+    allEnemies = [];
+    player.init();
+}
+
 let getSpawnTime = function (){
     return minEnemySpawnTime + Math.random() * maxEnemySpawnTime;
 }
@@ -150,12 +156,12 @@ let spawnEnemy = function () {
 }
 
 let enemyCollision = function () {
-    player.init();
+    reset();
 };
 
 let win = function () {
     won = true;
-    setTimeout(() => {player.init(); won = false;}, 1000);
+    setTimeout(() => {reset();}, 1000);
 };
 
 // Now instantiate your objects.
