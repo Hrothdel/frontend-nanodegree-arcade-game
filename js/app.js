@@ -4,10 +4,12 @@ const cellHeight = 83,
       enemyOffsetY = 25,
       maxEnemySpeed = 500,
       minEnemySpeed = 200,
-      maxEnemyNumber = 4,
+      maxEnemyNumber = 10,
       minEnemySpawnTime = 200,
       maxEnemySpawnTime = 1000,
       rightMargin = cellWidth * 5;
+
+let won = false;
 
 // Enemies our player must avoid
 class Enemy{
@@ -77,32 +79,34 @@ class Player{
     }
 
     handleInput (key){
-        switch (key){
-            case 'left':
-                if(this.left && this.x > 0){
-                    this.x--;
-                    this.left = false;
-                }
-                break;
-            case 'right':
-                if(this.right && this.x < 4){
-                    this.x++;
-                    this.right = false;
-                }
-                break;
-            case 'up':
-                if(this.up && this.y > 0){
-                    this.y--;
-                    this.up = false;
-                }
-                break;
-            case 'down':
-                if(this.down && this.y < 5){
-                    this.y++;
-                    this.down = false;
-                }
-                break;
-        };
+        if(!won){
+            switch (key){
+                case 'left':
+                    if(this.left && this.x > 0){
+                        this.x--;
+                        this.left = false;
+                    }
+                    break;
+                case 'right':
+                    if(this.right && this.x < 4){
+                        this.x++;
+                        this.right = false;
+                    }
+                    break;
+                case 'up':
+                    if(this.up && this.y > 0){
+                        this.y--;
+                        this.up = false;
+                    }
+                    break;
+                case 'down':
+                    if(this.down && this.y < 5){
+                        this.y++;
+                        this.down = false;
+                    }
+                    break;
+            }
+        }
     };
 
     unlockDirection(key){
@@ -122,7 +126,11 @@ class Player{
         }
     };
 
-    update(){};
+    update(){
+        if(this.y === 0 && !won){
+            win();
+        }
+    };
 
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x * cellWidth, this.y * cellHeight - characterOffsetY);
@@ -143,6 +151,11 @@ let spawnEnemy = function () {
 
 let enemyCollision = function () {
     player.init();
+};
+
+let win = function () {
+    won = true;
+    setTimeout(() => {player.init(); won = false;}, 1000);
 };
 
 // Now instantiate your objects.
