@@ -4,9 +4,9 @@ const cellHeight = 83,
       enemyOffsetY = 25,
       maxEnemySpeed = 500,
       minEnemySpeed = 200,
-      maxEnemyNumber = 4,
-      minEnemySpawnTime = 200,
-      maxEnemySpawnTime = 1000,
+      maxEnemyNumber = 7,
+      minEnemySpawnTime = 100,
+      maxEnemySpawnTime = 2000,
       rightMargin = cellWidth * 5;
 
 let won = false;
@@ -43,8 +43,9 @@ class Enemy{
         this.x += this.speed * dt;
 
         if(this.x > rightMargin && !this.willSpawn){
-                setTimeout(function () {this.initialize();}.bind(this), getSpawnTime());
-                this.willSpawn = true;
+            // If an enemy passes off the screen, respawn it at a random time
+            setTimeout(function () {this.initialize();}.bind(this), getSpawnTime());
+            this.willSpawn = true;
         }
     };
 
@@ -73,12 +74,13 @@ class Player{
         this.up = true; this.down = true;
     };
 
-    init (){
+    initialize (){
         this.x = 2;
         this.y = 5;
     }
 
     handleInput (key){
+        // Handle player input only if the game isn't already won
         if(!won){
             switch (key){
                 case 'left':
@@ -137,42 +139,44 @@ class Player{
     };
 };
 
-let reset = function() {
+let reset = function(){
+    // Set the win state to false, clear all enemies, reinitialize the player object
+    // and respawn the enemies
     won = false;
     allEnemies = [];
-    player.init();
+    player.initialize();
+
+    spawnEnemies();
 }
 
 let getSpawnTime = function (){
-    return minEnemySpawnTime + Math.random() * maxEnemySpawnTime;
+    // Returns a random spawn time, within some bounds
+    return minEnemySpawnTime + Math.random() * (maxEnemySpawnTime - minEnemySpawnTime);
 }
 
-let spawnEnemy = function () {
-    if(allEnemies.length < maxEnemyNumber){
-        allEnemies.push(new Enemy);
+let spawnEnemies = function (){
+    for(let i = 1; i <= maxEnemyNumber; i++){
+        setTimeout(function () {allEnemies.push(new Enemy);}, getSpawnTime());
     }
-
-    setTimeout(spawnEnemy, getSpawnTime());
 }
 
-let enemyCollision = function () {
+let enemyCollision = function (){
     reset();
 };
 
-let hideWinScreen = function () {
+let hideWinScreen = function (){
     let win_screen = document.getElementById('win-screen');
     win_screen.style.display = 'none';
 }
 
-let showWinScreen = function () {
+let showWinScreen = function (){
     let win_screen = document.getElementById('win-screen');
     win_screen.style.display = 'flex';
 }
 
-let win = function () {
+let win = function (){
     won = true;
     showWinScreen();
-    // setTimeout(() => {reset();}, 1000);
 };
 
 // Now instantiate your objects.
@@ -181,12 +185,11 @@ let win = function () {
 
 let allEnemies = [], player = new Player('images/char-boy.png');
 
-// allEnemies.push(new Enemy);
-spawnEnemy();
+spawnEnemies();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function(e){
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -202,7 +205,7 @@ document.addEventListener('keydown', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', function(e){
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -215,6 +218,8 @@ document.addEventListener('keyup', function(e) {
         83: 'down'
     };
 
+    // Let the player move again in a given direction only after they have
+    // released the key
     player.unlockDirection(allowedKeys[e.keyCode]);
 });
 
