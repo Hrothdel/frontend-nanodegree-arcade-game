@@ -159,9 +159,20 @@ let enemyCollision = function () {
     reset();
 };
 
+let hideWinScreen = function () {
+    let win_screen = document.getElementById('win-screen');
+    win_screen.style.display = 'none';
+}
+
+let showWinScreen = function () {
+    let win_screen = document.getElementById('win-screen');
+    win_screen.style.display = 'flex';
+}
+
 let win = function () {
     won = true;
-    setTimeout(() => {reset();}, 1000);
+    showWinScreen();
+    // setTimeout(() => {reset();}, 1000);
 };
 
 // Now instantiate your objects.
@@ -205,4 +216,9 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.unlockDirection(allowedKeys[e.keyCode]);
+});
+
+document.getElementById('reset-button').addEventListener('click', function() {
+    hideWinScreen();
+    reset();
 });
